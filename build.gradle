@@ -32,9 +32,16 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'blamejared'
+        url = 'https://maven.blamejared.com'
+    }
+    maven { url = 'https://maven.mcmoddev.com' }
 }
 
 dependencies {
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.652"
+    deobfCompile "net.darkhax.bookshelf:Bookshelf-1.12.2:2.2.494"
 }
 
 processResources {
