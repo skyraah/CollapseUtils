@@ -1,0 +1,16 @@
+[
+    {
+        "modid": "goodbarrels",
+        "name": "GoodBarrels",
+        "description": "",
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+        "url": "",
+        "updateUrl": "",
+        "authorList": ["skyraah"],
+        "credits": "",
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": []
+    }
+]
