@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -35,38 +36,45 @@ public class TileEntityBarrel extends TileEntityBasicTickable implements ITickab
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new IItemHandler() {
-                @Override
-                public int getSlots() {
-                    return inventory.getSlots();
-                }
-                @Override
-                public ItemStack getStackInSlot(int slot) {
-                    return inventory.getStackInSlot(slot);
-                }
-                @Override
-                public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                    if (slot == 0) {
-                        return inventory.insertItem(0, stack, simulate);
-                    }
-                    return stack;
-                }
-                @Override
-                public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                    if (slot == 1) {
-                        return inventory.extractItem(1, amount, simulate);
-                    }
-                    return ItemStack.EMPTY;
-                }
-                @Override
-                public int getSlotLimit(int slot) {
-                    return inventory.getSlotLimit(slot);
-                }
-                @Override
-                public boolean isItemValid(int slot, ItemStack stack) {
-                    return slot == 0;
-                }
-            });
+        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new IItemHandlerModifiable() {
+            @Override
+            public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+                inventory.setStackInSlot(slot, stack);
+            }
+
+            @Override
+            public int getSlots() {
+                return inventory.getSlots();
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack getStackInSlot(int slot) {
+                return inventory.getStackInSlot(slot);
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                return inventory.insertItem(slot, stack, simulate);
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                return inventory.extractItem(slot, amount, simulate);
+            }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return inventory.getSlotLimit(slot);
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return inventory.isItemValid(slot, stack);
+            }
+        });
     } else {
         return super.getCapability(capability, facing);
     }
