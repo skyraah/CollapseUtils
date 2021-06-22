@@ -1,7 +1,7 @@
 [
     {
-        "modid": "goodbarrels",
-        "name": "GoodBarrels",
+        "modid": "goodbarrel",
+        "name": "GoodBarrel",
         "description": "",
         "version": "${version}",
         "mcversion": "${mcversion}",
