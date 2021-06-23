@@ -1,13 +1,9 @@
 package skyraah.goodbarrels.block;
 
-import net.darkhax.bookshelf.block.BlockSubType;
 import net.darkhax.bookshelf.block.BlockTileEntity;
 import net.darkhax.bookshelf.block.ITileEntityBlock;
 import net.darkhax.bookshelf.block.property.PropertyString;
 import net.darkhax.bookshelf.registry.IVariant;
-import net.darkhax.bookshelf.util.StackUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -16,7 +12,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,12 +23,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 import skyraah.goodbarrels.Goodbarrel;
 import skyraah.goodbarrels.block.tileentity.TileEntityBarrel;
 import skyraah.goodbarrels.gui.GuiElement;
-
-import javax.annotation.Nullable;
 
 
 /**
@@ -70,11 +64,10 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }*/
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             if (state == state.withProperty(this.getVariantProp(), VARIANT[0]) && facing == EnumFacing.UP &&
-                    ItemStack.areItemStacksEqual(playerIn.inventory.getCurrentItem(), new ItemStack(Goodbarrel.BARREL_LID))) {
+                ItemStack.areItemStacksEqual(playerIn.inventory.getCurrentItem(), new ItemStack(Goodbarrel.BARREL_LID))) {
                 playerIn.inventory.getCurrentItem().shrink(1);
                 worldIn.setBlockState(pos, state.withProperty(this.getVariantProp(), VARIANT[1]));
                 return true;
@@ -85,8 +78,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
             } else if (facing != EnumFacing.UP && facing != EnumFacing.DOWN) {
                 final TileEntity tileentity = worldIn.getTileEntity(pos);
                 if (tileentity instanceof TileEntityBarrel) {
-                    int id = GuiElement.GUI_BARREL;
-                    playerIn.openGui(Goodbarrel.INSTANCE, id, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                    playerIn.openGui(Goodbarrel.INSTANCE, GuiElement.GUI_BARREL, worldIn, pos.getX(), pos.getY(), pos.getZ());
                 }
             }
         }
@@ -99,8 +91,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
-    {
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         items.add(new ItemStack(this));
     }
 
@@ -129,33 +120,34 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }
 
     @Override
-    public IBlockState getStateFromMeta (int meta) {
+    public IBlockState getStateFromMeta(int meta) {
 
         return this.getDefaultState().withProperty(this.getVariantProp(), this.VARIANT[meta]);
     }
 
     @Override
-    public int getMetaFromState (IBlockState state) {
+    public int getMetaFromState(IBlockState state) {
 
         return this.getVariantProp().getMetaData(state.getValue(this.getVariantProp()));
     }
 
     @Override
-    protected BlockStateContainer createBlockState () {
+    protected BlockStateContainer createBlockState() {
 
-        return new BlockStateContainer(this, new IProperty[] { this.getVariantProp() });
+        return new BlockStateContainer(this, new IProperty[]{this.getVariantProp()});
     }
 
     @Override
-    public String[] getVariant () {
+    public String[] getVariant() {
 
         return this.VARIANT;
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {final TileEntity tile = worldIn.getTileEntity(pos);
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        final TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityBarrel) {
-            final ItemStackHandler inv = ((TileEntityBarrel)tile).inventory;
+            final ItemStackHandler inv = ((TileEntityBarrel) tile).inventory;
             for (int i = 0; i < inv.getSlots(); i++) {
                 InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inv.getStackInSlot(i));
             }

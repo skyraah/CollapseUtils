@@ -5,76 +5,78 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import skyraah.goodbarrels.block.tileentity.TileEntityBarrel;
 
 /**
  * @author skyraah
  */
+@SuppressWarnings("NullableProblems")
 public class ContainerBarrel extends Container {
 
-    private final IItemHandler input;
-    private final IItemHandler output;
+    private TileEntityBarrel te;
 
-    public ContainerBarrel(EntityPlayer player, TileEntity tileEntityBarrel) {
-        this.input = tileEntityBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-        this.output = tileEntityBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-        this.addSlotToContainer(new SlotItemHandler(this.input, 0, 53, 30){
-            @Override
-            public int getItemStackLimit(ItemStack stack)
-            {
-                return 16;
-            }
-        });
+    public ContainerBarrel(IInventory playerInventory, TileEntityBarrel te) {
+        this.te = te;
+        addOwnSlots();
+        addPlayerSlots(playerInventory);
+    }
 
-        this.addSlotToContainer(new SlotItemHandler(this.output, 1, 107, 30){
-            @Override
-            public int getItemStackLimit(ItemStack stack)
-            {
-                return 16;
-            }
-
-            @Override
-            public boolean isItemValid(ItemStack stack)
-            {
-                return false ;
-
-            }
-
-            @Override
-            public boolean canTakeStack(EntityPlayer playerIn)
-            {
-                return true;
-            }
-        });
-
-        for (int i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 9; ++j)
-            {
-                this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 74 + i * 18));
+    private void addPlayerSlots(IInventory playerInventory) {
+        for (int row = 0; row < 3; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                int x = 8 + col * 18;
+                int y = row * 18 + 74;
+                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
             }
         }
 
-        for (int i = 0; i < 9; ++i)
-        {
-            this.addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 132));
+        for (int row = 0; row < 9; ++row) {
+            int x = 8 + row * 18;
+            int y = 58 + 74;
+            this.addSlotToContainer(new Slot(playerInventory, row, x, y));
         }
+    }
+
+    private void addOwnSlots() {
+        IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+        int slotIndex = 0;
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, 53, 30));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 107, 30));
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (index < TileEntityBarrel.SIZE) {
+                if (!this.mergeItemStack(itemstack1, TileEntityBarrel.SIZE, this.inventorySlots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, TileEntityBarrel.SIZE, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+
+        return itemstack;
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return true;
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
-    {
-        return null;
+        return te.canInteractWith(playerIn);
     }
 }

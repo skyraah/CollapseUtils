@@ -1,5 +1,6 @@
 package skyraah.goodbarrels;
 
+import com.blamejared.ctgui.client.GuiHandler;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,6 +9,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import skyraah.goodbarrels.block.BlockBarrel;
 import skyraah.goodbarrels.gui.GuiElement;
 
@@ -34,18 +36,18 @@ public class Goodbarrel {
     public static final Block BARREL = new BlockBarrel();
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    public void onPreInit(FMLPreInitializationEvent event) {
         REGISTRY.registerBlock(BARREL, "barrel");
         REGISTRY.registerItem(BARREL_LID, "barrel_lid");
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
+    public void onInit(FMLInitializationEvent event) {
         new GuiElement();
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
+    public void onPostInit(FMLPostInitializationEvent event) {
 
     }
 }
