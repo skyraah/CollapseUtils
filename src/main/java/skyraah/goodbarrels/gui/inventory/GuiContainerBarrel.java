@@ -1,7 +1,6 @@
 package skyraah.goodbarrels.gui.inventory;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -15,11 +14,16 @@ import skyraah.goodbarrels.Goodbarrel;
 @SideOnly(Side.CLIENT)
 public class GuiContainerBarrel extends GuiContainer {
 
+    public static final int WIDTH = 180;
+    public static final int HEIGHT = 152;
+
     private static final ResourceLocation TEXTURE = new ResourceLocation(Goodbarrel.MOD_ID, "textures/gui/gui.png");
-    public GuiContainerBarrel(Container inventorySlotsIn) {
-        super(inventorySlotsIn);
-        this.xSize = 176;
-        this.ySize = 156;
+
+    public GuiContainerBarrel(ContainerBarrel containerBarrel) {
+        super(containerBarrel);
+
+        this.xSize = WIDTH;
+        this.ySize = HEIGHT;
     }
 
     @Override
