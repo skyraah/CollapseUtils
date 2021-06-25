@@ -5,18 +5,14 @@ buildscript {
             name = "forge"
             url = "https://files.minecraftforge.net/maven"
         }
-        maven { url = "https://repo.spongepowered.org/maven" }
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
     }
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: 'org.spongepowered.mixin'
-
-group = 'skyraah.collapseUtils'
+group = 'skyraah.collapseutils'
 version = '1.0.0'
 archivesBaseName = 'collapseutils'
 
@@ -31,8 +27,6 @@ minecraft {
     // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "stable_39"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    clientJvmArgs += "-Dfml.coreMods.load=skyraah.collapseutils.CollapseUtilsPlugin"
-    serverJvmArgs += "-Dfml.coreMods.load=skyraah.collapseutils.CollapseUtilsPlugin"
 }
 
 repositories {
@@ -46,7 +40,6 @@ repositories {
         url = "https://www.cursemaven.com"
     }
     maven { url = 'https://maven.mcmoddev.com' }
-    maven { url = "https://repo.spongepowered.org/maven" }
 }
 
 dependencies {
@@ -56,11 +49,6 @@ dependencies {
     deobfCompile "curse.maven:tough-as-nails-246391:2710969"
     deobfCompile "curse.maven:matteroverdrive-legacy-308192:2699215"
 
-    provided('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
-        exclude module: 'guava'
-        exclude module: 'commons-io'
-        exclude module: 'gson'
-    }
 }
 
 processResources {
@@ -79,17 +67,5 @@ processResources {
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
-    }
-    mixin {
-        add sourceSets.main, "mixins.collapseutils.refmap.json"
-    }
-
-    jar {
-        manifest.attributes([
-                'TweakClass' : 'skyraah.collapseutils.CollapseUtilsPlugin',
-                "ForceLoadAsMod" : true,
-                "FMLCorePlugin" : "skyraah.collapseutils.CollapseUtilsPlugin",
-                "FMLCorePluginContainsFMLMod" : true,
-        ])
     }
 }

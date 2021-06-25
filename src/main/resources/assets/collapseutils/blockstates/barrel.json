@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "variant=open": { "model": "collapseutils:barrel_open" },
+    "variant=close": { "model": "collapseutils:barrel" }
+  }
+}

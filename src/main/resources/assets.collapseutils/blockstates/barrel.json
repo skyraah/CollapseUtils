@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "variant=open": { "model": "goodbarrel:barrel_open" },
-    "variant=close": { "model": "goodbarrel:barrel" }
-  }
-}
