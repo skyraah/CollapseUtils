@@ -1,4 +1,4 @@
-package skyraah.goodbarrels.block.tileentity;
+package skyraah.collapseutils.block.tileentity;
 
 import javax.annotation.Nullable;
 import net.darkhax.bookshelf.block.tileentity.TileEntityBasicTickable;

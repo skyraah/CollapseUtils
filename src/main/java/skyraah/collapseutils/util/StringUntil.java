@@ -1,4 +1,4 @@
-package skyraah.goodbarrels.util;
+package skyraah.collapseutils.util;
 
 import java.util.Locale;
 

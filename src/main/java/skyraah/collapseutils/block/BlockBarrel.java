@@ -1,9 +1,10 @@
-package skyraah.goodbarrels.block;
+package skyraah.collapseutils.block;
 
 import net.darkhax.bookshelf.block.BlockTileEntity;
 import net.darkhax.bookshelf.block.ITileEntityBlock;
 import net.darkhax.bookshelf.block.property.PropertyString;
 import net.darkhax.bookshelf.registry.IVariant;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -25,9 +26,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import skyraah.goodbarrels.Goodbarrel;
-import skyraah.goodbarrels.block.tileentity.TileEntityBarrel;
-import skyraah.goodbarrels.gui.GuiElement;
+import skyraah.collapseutils.CollapseUtils;
+import skyraah.collapseutils.block.tileentity.TileEntityBarrel;
+import skyraah.collapseutils.gui.GuiElement;
 
 
 /**
@@ -58,27 +59,27 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
 /*    @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         if (state == state.withProperty(this.getVariantProp(), VARIANT[1])) {
-            drops.add(new ItemStack(Goodbarrel.BARREL_LID));
+            drops.add(new ItemStack(CollapseUtils.BARREL_LID));
         }
-        drops.add(new ItemStack(Goodbarrel.BARREL, 1, 0));
+        drops.add(new ItemStack(CollapseUtils.BARREL, 1, 0));
     }*/
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             if (state == state.withProperty(this.getVariantProp(), VARIANT[0]) && facing == EnumFacing.UP &&
-                ItemStack.areItemStacksEqual(playerIn.inventory.getCurrentItem(), new ItemStack(Goodbarrel.BARREL_LID))) {
+                ItemStack.areItemStacksEqual(playerIn.inventory.getCurrentItem(), new ItemStack(CollapseUtils.BARREL_LID))) {
                 playerIn.inventory.getCurrentItem().shrink(1);
                 worldIn.setBlockState(pos, state.withProperty(this.getVariantProp(), VARIANT[1]));
                 return true;
             } else if (state == state.withProperty(this.getVariantProp(), VARIANT[1]) && facing == EnumFacing.UP && playerIn.isSneaking()) {
-                ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(Goodbarrel.BARREL_LID, 1));
+                ItemHandlerHelper.giveItemToPlayer(playerIn, new ItemStack(CollapseUtils.BARREL_LID, 1));
                 worldIn.setBlockState(pos, state.withProperty(this.getVariantProp(), VARIANT[0]));
                 return true;
             } else if (facing != EnumFacing.UP && facing != EnumFacing.DOWN) {
                 final TileEntity tileentity = worldIn.getTileEntity(pos);
                 if (tileentity instanceof TileEntityBarrel) {
-                    playerIn.openGui(Goodbarrel.INSTANCE, GuiElement.GUI_BARREL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                    playerIn.openGui(CollapseUtils.INSTANCE, GuiElement.GUI_BARREL, worldIn, pos.getX(), pos.getY(), pos.getZ());
                 }
             }
         }
@@ -134,7 +135,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     @Override
     protected BlockStateContainer createBlockState() {
 
-        return new BlockStateContainer(this, new IProperty[]{this.getVariantProp()});
+        return new BlockStateContainer(this, new IProperty[]{ this.getVariantProp() });
     }
 
     @Override
@@ -152,7 +153,11 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
                 InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inv.getStackInSlot(i));
             }
         }
+        if (state == state.withProperty(this.getVariantProp(), VARIANT[1])) {
+            StackUtils.dropStackInWorld(worldIn, pos, new ItemStack(CollapseUtils.BARREL_LID));
+        }
         super.breakBlock(worldIn, pos, state);
+        worldIn.removeTileEntity(pos);
     }
 
     @Override

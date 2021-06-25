@@ -1,7 +1,7 @@
 [
     {
-        "modid": "goodbarrel",
-        "name": "GoodBarrel",
+        "modid": "collapseutils",
+        "name": "CollapseUtils",
         "description": "",
         "version": "${version}",
         "mcversion": "${mcversion}",

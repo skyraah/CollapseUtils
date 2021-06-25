@@ -1,17 +1,17 @@
-package skyraah.goodbarrels.gui;
+package skyraah.collapseutils.gui;
 
 import javax.annotation.Nullable;
-import net.minecraft.client.gui.inventory.GuiContainer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import skyraah.goodbarrels.Goodbarrel;
-import skyraah.goodbarrels.block.tileentity.TileEntityBarrel;
-import skyraah.goodbarrels.gui.inventory.ContainerBarrel;
-import skyraah.goodbarrels.gui.inventory.GuiContainerBarrel;
+import skyraah.collapseutils.CollapseUtils;
+import skyraah.collapseutils.block.tileentity.TileEntityBarrel;
+import skyraah.collapseutils.gui.inventory.ContainerBarrel;
+import skyraah.collapseutils.gui.inventory.GuiContainerBarrel;
 
 /**
  * @author skyraah
@@ -21,7 +21,7 @@ public class GuiElement implements IGuiHandler {
     public static final int GUI_BARREL = 1;
 
     public GuiElement() {
-        NetworkRegistry.INSTANCE.registerGuiHandler(Goodbarrel.INSTANCE, this);
+        NetworkRegistry.INSTANCE.registerGuiHandler(CollapseUtils.INSTANCE, this);
     }
 
     @Nullable

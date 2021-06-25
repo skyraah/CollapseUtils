@@ -1,4 +1,4 @@
-package skyraah.goodbarrels.gui.inventory;
+package skyraah.collapseutils.gui.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import skyraah.goodbarrels.block.tileentity.TileEntityBarrel;
+import skyraah.collapseutils.block.tileentity.TileEntityBarrel;
 
 /**
  * @author skyraah
@@ -44,8 +44,33 @@ public class ContainerBarrel extends Container {
         IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
         int slotIndex = 0;
-        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, 53, 30));
-        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 107, 30));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, 53, 30) {
+            @Override
+            public int getItemStackLimit(ItemStack stack)
+            {
+                return 16;
+            }
+        });
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 107, 30) {
+            @Override
+            public int getItemStackLimit(ItemStack stack)
+            {
+                return 16;
+            }
+
+            @Override
+            public boolean isItemValid(ItemStack stack)
+            {
+                return false ;
+
+            }
+
+            @Override
+            public boolean canTakeStack(EntityPlayer playerIn)
+            {
+                return true;
+            }
+        });
     }
 
     @Override

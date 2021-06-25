@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "goodbarrel:blocks/barrel",
-		"particle": "goodbarrel:blocks/barrel"
+		"0": "collapseutils:blocks/barrel",
+		"particle": "collapseutils:blocks/barrel"
 	},
 	"elements": [
 		{
