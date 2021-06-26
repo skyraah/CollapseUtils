@@ -1,7 +1,5 @@
 package skyraah.collapseutils.integration.crafttweaker.matteroverdrive;
 
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.player.IPlayer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +14,6 @@ import stanhebben.zenscript.annotations.ZenMethod;
  * @author skyraah
  */
 
-@ZenRegister
-@ModOnly("matteroverdrive")
 @ZenExpansion("crafttweaker.player.IPlayer")
 
 public class IMatterOverdrivePlayerExpansion {

@@ -1,15 +1,21 @@
 package skyraah.collapseutils;
 
+import crafttweaker.CraftTweakerAPI;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.Mod;
 import skyraah.collapseutils.block.BlockBarrel;
 import skyraah.collapseutils.gui.GuiElement;
+import skyraah.collapseutils.integration.crafttweaker.matteroverdrive.IMatterOverdrivePlayerExpansion;
+
+import java.io.IOException;
 
 import static skyraah.collapseutils.CollapseUtils.MOD_ID;
 
@@ -40,12 +46,15 @@ public class CollapseUtils {
     }
 
     @Mod.EventHandler
+    public void onConstruct(FMLConstructionEvent event) throws IOException {
+        if (!Loader.isModLoaded("randomtweaker") && Loader.isModLoaded("matteroverdrive")) {
+            CraftTweakerAPI.registerClass(IMatterOverdrivePlayerExpansion.class);
+        }
+    }
+
+    @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
         new GuiElement();
     }
 
-    @Mod.EventHandler
-    public void onPostInit(FMLPostInitializationEvent event) {
-
-    }
 }
