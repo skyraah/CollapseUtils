@@ -6,16 +6,14 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.Mod;
 import skyraah.collapseutils.block.BlockBarrel;
 import skyraah.collapseutils.gui.GuiElement;
 import skyraah.collapseutils.integration.crafttweaker.matteroverdrive.IMatterOverdrivePlayerExpansion;
-
-import java.io.IOException;
+import skyraah.collapseutils.util.RegisterHandler;
 
 import static skyraah.collapseutils.CollapseUtils.MOD_ID;
 
@@ -41,12 +39,13 @@ public class CollapseUtils {
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
+        RegisterHandler.onRegister();
         REGISTRY.registerBlock(BARREL, "barrel");
         REGISTRY.registerItem(BARREL_LID, "barrel_lid");
     }
 
     @Mod.EventHandler
-    public void onConstruct(FMLConstructionEvent event) throws IOException {
+    public void onConstruct(FMLConstructionEvent event) {
         if (!Loader.isModLoaded("randomtweaker") && Loader.isModLoaded("matteroverdrive")) {
             CraftTweakerAPI.registerClass(IMatterOverdrivePlayerExpansion.class);
         }
@@ -54,7 +53,9 @@ public class CollapseUtils {
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
+        RegisterHandler.blockOreDictRegister();
         new GuiElement();
     }
+
 
 }

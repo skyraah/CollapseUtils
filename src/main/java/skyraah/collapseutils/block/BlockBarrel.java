@@ -47,6 +47,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
         if (this.hasTileEntity(this.getStateFromMeta(0))) {
             this.setCreativeTab(CreativeTabs.DECORATIONS);
         }
+
     }
 
     public static AxisAlignedBB BARREL_AABB = new AxisAlignedBB(0.128D, 0.0D, 0.128D, 0.872D, 1.0D, 0.872D);
