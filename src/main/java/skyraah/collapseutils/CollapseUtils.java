@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import skyraah.collapseutils.block.BlockBarrel;
-import skyraah.collapseutils.block.TestBarrel;
 import skyraah.collapseutils.gui.GuiElement;
 import skyraah.collapseutils.integration.crafttweaker.matteroverdrive.IMatterOverdrivePlayerExpansion;
 import skyraah.collapseutils.util.RegisterHandler;
@@ -37,14 +36,12 @@ public class CollapseUtils {
     public static final RegistryHelper REGISTRY = new RegistryHelper().enableAutoRegistration();
     public static final Item BARREL_LID = new Item().setCreativeTab(CreativeTabs.MISC).setMaxStackSize(1).setNoRepair().setMaxDamage(0);
     public static final Block BARREL = new BlockBarrel();
-    public static final Block TEST_BARREL = new TestBarrel();
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
         RegisterHandler.onRegister();
         REGISTRY.registerBlock(BARREL, "barrel");
         REGISTRY.registerItem(BARREL_LID, "barrel_lid");
-        REGISTRY.registerBlock(TEST_BARREL, "test_barrel");
     }
 
     @Mod.EventHandler
