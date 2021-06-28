@@ -24,6 +24,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import skyraah.collapseutils.CollapseUtils;
@@ -68,6 +70,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
+            final TileEntity tileentity = worldIn.getTileEntity(pos);
             if (state == state.withProperty(this.getVariantProp(), VARIANT[0]) && facing == EnumFacing.UP &&
                 ItemStack.areItemStacksEqual(playerIn.inventory.getCurrentItem(), new ItemStack(CollapseUtils.BARREL_LID))) {
                 playerIn.inventory.getCurrentItem().shrink(1);
@@ -78,10 +81,12 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
                 worldIn.setBlockState(pos, state.withProperty(this.getVariantProp(), VARIANT[0]));
                 return true;
             } else if (facing != EnumFacing.UP && facing != EnumFacing.DOWN) {
-                final TileEntity tileentity = worldIn.getTileEntity(pos);
-                if (tileentity instanceof TileEntityBarrel) {
+                if (tileentity instanceof TileEntityBarrel && state == state.withProperty(this.getVariantProp(), VARIANT[1])) {
                     playerIn.openGui(CollapseUtils.INSTANCE, GuiElement.GUI_BARREL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                    return true;
                 }
+            } else if (state == state.withProperty(this.getVariantProp(), VARIANT[0])){
+                return ((TileEntityBarrel)worldIn.getTileEntity(pos)).activate(worldIn,pos,state,playerIn,hand,facing,hitX,hitY,hitZ);
             }
         }
         return true;
@@ -159,6 +164,25 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
         }
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
+    }
+
+    @Override
+    public void fillWithRain(World worldIn, BlockPos pos) {
+        float f = worldIn.getBiome(pos).getTemperature(pos);
+        if (worldIn.getBlockState(pos) == this.getStateFromMeta(0)){
+            if (worldIn.getBiomeProvider().getTemperatureAtHeight(f, pos.getY()) >= 0.15F) {
+                TileEntity te = worldIn.getTileEntity(pos);
+
+                if (te != null && te instanceof TileEntityBarrel) {
+                    TileEntityBarrel telb = (TileEntityBarrel) te;
+                    FluidStack fluid = new FluidStack(FluidRegistry.WATER, 50);
+
+                    if (telb.getTank().canFillFluidType(fluid)) {
+                        telb.getTank().fill(fluid, true);
+                    }
+                }
+            }
+        }
     }
 
     @Override
