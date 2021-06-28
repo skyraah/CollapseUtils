@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 public class TileEntityBarrel extends TileEntityBasicTickable implements ITickable {
 
     public static final int SIZE = 2;
+    public static final int MAX_TEMP = 573;
     private FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME * 8) {
         @Override
         protected void onContentsChanged() {
@@ -36,7 +37,7 @@ public class TileEntityBarrel extends TileEntityBasicTickable implements ITickab
 
         }
     };
-    public static final int MAX_TEMP = 573;
+
 
     public final ItemStackHandler inventory = new ItemStackHandler(SIZE) {
         @Override
@@ -81,11 +82,9 @@ public class TileEntityBarrel extends TileEntityBasicTickable implements ITickab
                         this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), true);
                         this.markDirty();
                     }
-                }
-                return true;
+                } return true;
             }
-        }
-        return false;
+        } return false;
     }
 
     @Override
