@@ -1,14 +1,23 @@
 package skyraah.collapseutils.gui.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.UniversalBucket;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import skyraah.collapseutils.block.tileentity.TileEntityBarrel;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author skyraah
@@ -62,7 +71,6 @@ public class ContainerBarrel extends Container {
             public boolean isItemValid(ItemStack stack)
             {
                 return false ;
-
             }
 
             @Override
@@ -96,7 +104,6 @@ public class ContainerBarrel extends Container {
                 slot.onSlotChanged();
             }
         }
-
         return itemstack;
     }
 
