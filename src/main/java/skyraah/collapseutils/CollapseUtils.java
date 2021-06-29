@@ -37,15 +37,15 @@ public class CollapseUtils {
     public static CollapseUtils INSTANCE;
     @SidedProxy(clientSide = "skyraah.collapseutils.proxy.ClientProxy", serverSide = "skyraah.collapseutils.proxy.CommonProxy")
     public static CommonProxy proxy;
-    public static final RegistryHelper REGISTRY = new RegistryHelper().enableAutoRegistration();
+    /*public static final RegistryHelper REGISTRY = new RegistryHelper().enableAutoRegistration();
     public static final Item BARREL_LID = new Item().setCreativeTab(CreativeTabs.MISC).setMaxStackSize(1).setNoRepair().setMaxDamage(0);
-    public static final Block BARREL = new BlockBarrel();
+    public static final Block BARREL = new BlockBarrel();*/
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
         RegisterHandler.onRegister();
-        REGISTRY.registerBlock(BARREL, "barrel");
-        REGISTRY.registerItem(BARREL_LID, "barrel_lid");
+        /*REGISTRY.registerBlock(BARREL, "barrel");
+        REGISTRY.registerItem(BARREL_LID, "barrel_lid");*/
         proxy.registerRenderers();
     }
 

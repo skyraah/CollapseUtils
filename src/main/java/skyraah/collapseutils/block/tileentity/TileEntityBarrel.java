@@ -111,8 +111,22 @@ public class TileEntityBarrel extends TileEntityBasicTickable implements ITickab
         return tank;
     }
 
+    public Fluid getFluid() {
+        if (tank.getFluid() != null) {
+            return tank.getFluid().getFluid();
+        } return null ;
+    }
+
     @Override
     public boolean hasFastRenderer() {
         return true;
+    }
+
+    public int getAmount() {
+        return tank.getFluidAmount();
+    }
+
+    public int getCapacity() {
+        return tank.getCapacity();
     }
 }

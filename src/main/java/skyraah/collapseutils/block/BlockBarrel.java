@@ -32,6 +32,8 @@ import skyraah.collapseutils.CollapseUtils;
 import skyraah.collapseutils.block.tileentity.TileEntityBarrel;
 import skyraah.collapseutils.gui.GuiElement;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * @author skyraah
@@ -55,7 +57,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     public static AxisAlignedBB BARREL_AABB = new AxisAlignedBB(0.128D, 0.0D, 0.128D, 0.872D, 1.0D, 0.872D);
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(@Nonnull IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
         return BARREL_AABB;
     }
 
@@ -68,7 +70,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }*/
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             final TileEntity tileentity = worldIn.getTileEntity(pos);
             if (state == state.withProperty(this.getVariantProp(), VARIANT[0]) && facing == EnumFacing.UP &&
@@ -85,7 +87,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
                     playerIn.openGui(CollapseUtils.INSTANCE, GuiElement.GUI_BARREL, worldIn, pos.getX(), pos.getY(), pos.getZ());
                     return true;
                 }
-            } else if (state == state.withProperty(this.getVariantProp(), VARIANT[0])){
+            } else if (state == state.withProperty(this.getVariantProp(), VARIANT[1])){
                 return ((TileEntityBarrel)worldIn.getTileEntity(pos)).activate(worldIn,pos,state,playerIn,hand,facing,hitX,hitY,hitZ);
             }
         }
@@ -93,22 +95,22 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(@Nonnull IBlockState state) {
         return true;
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+    public void getSubBlocks(@Nonnull CreativeTabs itemIn, NonNullList<ItemStack> items) {
         items.add(new ItemStack(this));
     }
 
     @Override
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(@Nonnull IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(@Nonnull IBlockState state) {
         return false;
     }
 
@@ -122,7 +124,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
         return new TileEntityBarrel();
     }
 
@@ -167,7 +169,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }
 
     @Override
-    public void fillWithRain(World worldIn, BlockPos pos) {
+    public void fillWithRain(World worldIn, @Nonnull BlockPos pos) {
         float f = worldIn.getBiome(pos).getTemperature(pos);
         if (worldIn.getBlockState(pos) == this.getStateFromMeta(0)){
             if (worldIn.getBiomeProvider().getTemperatureAtHeight(f, pos.getY()) >= 0.15F) {
@@ -186,7 +188,7 @@ public final class BlockBarrel extends BlockTileEntity implements ITileEntityBlo
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(@Nonnull IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 }
